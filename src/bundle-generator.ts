@@ -87,6 +87,8 @@ export interface OutputOptions {
 	 */
 	noBanner?: boolean;
 
+	header?: string;
+
 	/**
 	 * Enables stripping the `const` keyword from every direct-exported (or re-exported) from entry file `const enum`.
 	 * This allows you "avoid" the issue described in https://github.com/microsoft/TypeScript/issues/37774.
@@ -369,6 +371,7 @@ export function generateDtsBundle(entries: readonly EntryPointConfig[], options:
 				sortStatements: outputOptions.sortNodes,
 				umdModuleName: outputOptions.umdModuleName,
 				noBanner: outputOptions.noBanner,
+				header: outputOptions.header,
 			}
 		);
 	});

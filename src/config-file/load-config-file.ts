@@ -78,6 +78,7 @@ const configScheme: SchemeDescriptor<BundlerConfig> = {
 				sortNodes: schemaPrimitiveValues.boolean,
 				umdModuleName: schemaPrimitiveValues.string,
 				noBanner: schemaPrimitiveValues.boolean,
+				header: schemaPrimitiveValues.string,
 				respectPreserveConstEnum: schemaPrimitiveValues.boolean,
 				exportReferencedTypes: schemaPrimitiveValues.boolean,
 			},
