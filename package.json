@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "dts-bundle-generator",
+  "name": "@moyuyc/dts-bundle-generator",
   "version": "6.9.0",
   "description": "DTS Bundle Generator",
   "main": "dist/bundle-generator.js",

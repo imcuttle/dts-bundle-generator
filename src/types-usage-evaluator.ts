@@ -6,15 +6,18 @@ import {
 	isNodeNamedDeclaration,
 	splitTransientSymbol,
 } from './helpers/typescript';
+import {CompilationOptions} from "./bundle-generator";
 
 export type NodesParents = Map<ts.Symbol, Set<ts.Symbol>>;
 
 export class TypesUsageEvaluator {
 	private readonly typeChecker: ts.TypeChecker;
+	private readonly options: CompilationOptions;
 	private readonly nodesParentsMap: NodesParents = new Map<ts.Symbol, Set<ts.Symbol>>();
 
-	public constructor(files: ts.SourceFile[], typeChecker: ts.TypeChecker) {
+	public constructor(files: ts.SourceFile[], typeChecker: ts.TypeChecker, options: CompilationOptions = {}) {
 		this.typeChecker = typeChecker;
+		this.options = options;
 		this.computeUsages(files);
 	}
 
@@ -65,7 +68,9 @@ export class TypesUsageEvaluator {
 			}
 		} else if (isNodeNamedDeclaration(node) && node.name) {
 			const childSymbol = this.getSymbol(node.name);
-			this.computeUsagesRecursively(node, childSymbol);
+			if (childSymbol) {
+				this.computeUsagesRecursively(node, childSymbol);
+			}
 		} else if (ts.isVariableStatement(node)) {
 			for (const varDeclaration of node.declarationList.declarations) {
 				this.computeUsageForNode(varDeclaration);
@@ -90,7 +95,11 @@ export class TypesUsageEvaluator {
 					continue;
 				}
 
-				const childSymbols = splitTransientSymbol(this.getSymbol(child), this.typeChecker);
+				const symbol = this.getSymbol(child);
+				if (!symbol) {
+					continue;
+				}
+				const childSymbols = splitTransientSymbol(symbol, this.typeChecker);
 
 				for (const childSymbol of childSymbols) {
 					let symbols = this.nodesParentsMap.get(childSymbol);
@@ -108,9 +117,12 @@ export class TypesUsageEvaluator {
 		}
 	}
 
-	private getSymbol(node: ts.Node): ts.Symbol {
+	private getSymbol(node: ts.Node): ts.Symbol | undefined {
 		const nodeSymbol = this.typeChecker.getSymbolAtLocation(node);
 		if (nodeSymbol === undefined) {
+			if (this.options?.errorSilent) {
+				return undefined;
+			}
 			throw new Error(`Cannot find symbol for node: ${node.getText()}`);
 		}
 

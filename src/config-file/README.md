@@ -4,7 +4,7 @@ Config file might be either JSON file or JS file with CommonJS export of the con
 
 ## Schema
 
-```js
+```json5
 {
     compilationOptions: {
         /**
@@ -21,6 +21,11 @@ Config file might be either JSON file or JS file with CommonJS export of the con
          * Must be set if entries count more than 1.
          */
         preferredConfigPath: './tsconfig.json',
+
+        /**
+         * Silent when error happened
+         */
+        errorSilent: false,
     },
 
     // non-empty array of entries

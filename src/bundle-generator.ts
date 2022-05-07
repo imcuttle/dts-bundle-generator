@@ -51,6 +51,11 @@ export interface CompilationOptions {
 	 * Path to the tsconfig file that will be used for the compilation.
 	 */
 	preferredConfigPath?: string;
+
+	/**
+	 * errorSilent
+	 */
+	errorSilent?: boolean;
 }
 
 export interface OutputOptions {
@@ -146,7 +151,7 @@ export function generateDtsBundle(entries: readonly EntryPointConfig[], options:
 
 	verboseLog(`Input source files:\n  ${sourceFiles.map((file: ts.SourceFile) => file.fileName).join('\n  ')}`);
 
-	const typesUsageEvaluator = new TypesUsageEvaluator(sourceFiles, typeChecker);
+	const typesUsageEvaluator = new TypesUsageEvaluator(sourceFiles, typeChecker, options);
 
 	return entries.map((entry: EntryPointConfig) => {
 		normalLog(`Processing ${entry.filePath}`);
