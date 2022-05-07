@@ -1,5 +1,6 @@
 /.vscode/launch.json
 
+.idea/
 /dist/
 /dts-out/
 
