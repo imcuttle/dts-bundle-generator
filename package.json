@@ -3,7 +3,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "6.9.1",
+  "version": "6.9.2",
   "description": "DTS Bundle Generator",
   "main": "dist/bundle-generator.js",
   "typings": "dist/bundle-generator.d.ts",
